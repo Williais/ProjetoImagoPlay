@@ -4,14 +4,18 @@ import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository u){
+    public UserService(UserRepository u, BCryptPasswordEncoder bCrypt){
+
         this.userRepository = u;
+        this.bCryptPasswordEncoder = bCrypt;
     }
 
     public UserResponseDTO cadastrarUsuario(UserRequestDTO request){
@@ -23,7 +27,7 @@ public class UserService {
         User newUser = new User();
         newUser.setNome(request.getNome());
         newUser.setEmail(request.getEmail());
-        newUser.setSenha(request.getSenha());
+        newUser.setSenha(bCryptPasswordEncoder.encode(request.getSenha()));
 
         User usuarioSalvo = userRepository.save(newUser);
 

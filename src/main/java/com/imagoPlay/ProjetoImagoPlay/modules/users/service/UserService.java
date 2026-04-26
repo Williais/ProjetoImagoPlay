@@ -1,11 +1,15 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.users.service;
 
+import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -37,5 +41,28 @@ public class UserService {
         response.setId(usuarioSalvo.getId());
 
         return response;
+    }
+
+    public UserResponseDTO autenticarUsuario(LoginRequestDTO login){
+        User usuarioEncontrado = userRepository.
+                findByEmail(login.getEmail()).
+                orElseThrow(() -> new RuntimeException("E-mail ou senha incorretos"));
+
+        String senha = login.getSenha();
+        String hashSenha = usuarioEncontrado.getSenha();
+
+        if(!bCryptPasswordEncoder.matches(senha, hashSenha)){
+            throw new RuntimeException("E-mail ou senha incorretos");
+        }else {
+            UserResponseDTO usuario =new UserResponseDTO();
+
+            usuario.setNome(usuarioEncontrado.getNome());
+            usuario.setId(usuarioEncontrado.getId());
+            usuario.setEmail(usuarioEncontrado.getEmail());
+
+            return usuario;
+        }
+
+
     }
 }

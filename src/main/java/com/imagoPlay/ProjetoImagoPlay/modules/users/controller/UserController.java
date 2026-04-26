@@ -1,9 +1,11 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.users.controller;
 
+import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,13 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDTO createUser(@RequestBody UserRequestDTO u){
+    public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO u){
         return userService.cadastrarUsuario(u);
     }
+
+    @PostMapping("/login")
+    public UserResponseDTO authUser(@RequestBody LoginRequestDTO l){
+        return userService.autenticarUsuario(l);
+    }
+
 }

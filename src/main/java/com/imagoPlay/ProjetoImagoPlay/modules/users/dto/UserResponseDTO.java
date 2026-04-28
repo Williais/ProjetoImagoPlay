@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UserResponseDTO {
+public class UserResponseDTO {// O Filtro de Saída(Devolve para o React)
 
     private UUID id;
     private String nome;

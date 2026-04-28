@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRequestDTO {
+public class UserRequestDTO { // Dados que vem do meu Front (O Filtro de Entrada)
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
 

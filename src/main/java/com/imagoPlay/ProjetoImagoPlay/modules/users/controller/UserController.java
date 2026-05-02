@@ -1,6 +1,7 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.users.controller;
 
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginRequestDTO;
+import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserResponseDTO authUser(@RequestBody LoginRequestDTO l){
+    public LoginResponseDTO authUser(@RequestBody LoginRequestDTO l){
         return userService.autenticarUsuario(l);
     }
 

@@ -22,7 +22,7 @@ public class Producer {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
-    private User userID; // nao sei fazer esse relacionamento aq...
+    //private User userID; // nao sei fazer esse relacionamento aq...
 
     private String cpfCnpj; //criar uma validação depois
     private String bio;

@@ -1,6 +1,7 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.users.service;
 
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginRequestDTO;
+import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.LoginResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.dto.UserResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
@@ -17,9 +18,10 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TokenService tokenService;
 
-    public UserService(UserRepository u, BCryptPasswordEncoder bCrypt){
-
+    public UserService(UserRepository u, BCryptPasswordEncoder bCrypt, TokenService t){
+        this.tokenService = t;
         this.userRepository = u;
         this.bCryptPasswordEncoder = bCrypt;
     }
@@ -47,7 +49,7 @@ public class UserService {
         return response;
     }
 
-    public UserResponseDTO autenticarUsuario(LoginRequestDTO login){
+    public LoginResponseDTO autenticarUsuario(LoginRequestDTO login){
         User usuarioEncontrado = userRepository.
                 findByEmail(login.getEmail()).
                 orElseThrow(() -> new RuntimeException("E-mail ou senha incorretos"));
@@ -58,13 +60,15 @@ public class UserService {
         if(!bCryptPasswordEncoder.matches(senha, hashSenha)){
             throw new RuntimeException("E-mail ou senha incorretos");
         }else {
-            UserResponseDTO usuario =new UserResponseDTO();
 
-            usuario.setNome(usuarioEncontrado.getNome());
-            usuario.setId(usuarioEncontrado.getId());
-            usuario.setEmail(usuarioEncontrado.getEmail());
+            String token = tokenService.gerarToken(usuarioEncontrado);
 
-            return usuario;
+            LoginResponseDTO validacao = new LoginResponseDTO();
+
+            validacao.setNome(usuarioEncontrado.getNome());
+            validacao.setToken(token);
+
+            return validacao;
         }
 
 

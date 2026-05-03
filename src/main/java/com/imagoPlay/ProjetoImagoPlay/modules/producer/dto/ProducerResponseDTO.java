@@ -14,4 +14,5 @@ public class ProducerResponseDTO {
     private String cidade;
     private String estado;
     private String nomeArtistico;
+    private String chavePix;
 }

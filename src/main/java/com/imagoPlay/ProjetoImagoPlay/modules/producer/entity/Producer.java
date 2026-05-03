@@ -1,10 +1,7 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.producer.entity;
 
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,13 +19,17 @@ public class Producer {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
-    //private User userID; // nao sei fazer esse relacionamento aq...
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-    private String cpfCnpj; //criar uma validação depois
+    private String cpfCnpj;
     private String bio;
     private String cidade;
     private String estado;
     private String nomeArtistico;
 
-    private boolean aprovado;
+    private String chavePix;
+
+    private boolean isAprovado = false;
 }

@@ -1,5 +1,6 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.producer.service;
 
+import com.imagoPlay.ProjetoImagoPlay.config.DocumentValidator;
 import com.imagoPlay.ProjetoImagoPlay.config.SecurityConfig;
 import com.imagoPlay.ProjetoImagoPlay.modules.producer.dto.ProducerRequestDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.producer.dto.ProducerResponseDTO;
@@ -24,6 +25,15 @@ public class ProducerService {
 
         if(producerRepository.existsByUser(userLogado)){
             throw new RuntimeException("Usuário já possui um perfil de produtor.");
+        }
+
+        String doc = p.getCpfCnpj();
+        if (doc.length() == 11) {
+            DocumentValidator.validarCPF(doc);
+        } else if (doc.length() == 14) {
+            DocumentValidator.validarCNPJ(doc);
+        } else {
+            throw new RuntimeException("Documento deve ter 11 (CPF) ou 14 (CNPJ) dígitos.");
         }
 
         Producer produtor = new Producer();

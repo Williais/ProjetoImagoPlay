@@ -1,7 +1,7 @@
 package com.imagoPlay.ProjetoImagoPlay.config;
 
 public class DocumentValidator {
-    public void validarCPF(String cpf){
+    public static void validarCPF(String cpf){
         if (cpf.length() != 11) {
             throw new RuntimeException("O CPF precisa ter 11 dígitos.");
         }
@@ -43,7 +43,7 @@ public class DocumentValidator {
         }
     }
 
-    public void validarCNPJ(String cnpj){
+    public static void validarCNPJ(String cnpj){
         if (cnpj.length() != 14) {
             throw new RuntimeException("O CNPJ precisa ter 14 dígitos.");
         }
@@ -52,44 +52,26 @@ public class DocumentValidator {
             throw new RuntimeException("CNPJ Inválido: Não são permitidos dígitos repetidos.");
         }
 
-        int result = 0;
-        int peso1 = 10;
-        int peso2 = 6;
+        int[] pesos1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int primeiroDigito = calcularDigito(cnpj.substring(0, 12), pesos1);
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 6; j++) {
-                result += (cnpj.charAt(j) - '0') * peso2;
-                peso2--;
-            }
-            result += (cnpj.charAt(i) - '0') * peso1;
-            peso1--;
+        int[] pesos2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int segundoDigito = calcularDigito(cnpj.substring(0, 13), pesos2);
+
+        int d1 = cnpj.charAt(12) - '0';
+        int d2 = cnpj.charAt(13) - '0';
+
+        if (primeiroDigito != d1 || segundoDigito != d2) {
+            throw new RuntimeException("CNPJ Inválido");
         }
+    }
 
-        int resto = 11 - (result % 11);
-        int penultimoDigito = (resto > 10) ? 0 : resto;
-
-        result = 0;
-        peso1 = 10;
-        peso2 = 7;
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 6; j++) {
-                result += (cnpj.charAt(j) - '0') * peso2;
-                peso2--;
-            }
-            result += (cnpj.charAt(i) - '0') * peso1;
-            peso1--;
+    private static int calcularDigito(String str, int[] peso) {
+        int soma = 0;
+        for (int i = str.length() - 1; i >= 0; i--) {
+            soma += (str.charAt(i) - '0') * peso[peso.length - str.length() + i];
         }
-
-        resto = 13 - (result % 13);
-        int ultimoDigito = (resto > 10) ? 0 : resto;
-
-        int cnpjPenultimo = cnpj.charAt(12);
-        int cnpjUltimo = cnpj.charAt(13);
-
-        if(cnpjPenultimo != penultimoDigito || cnpjUltimo != ultimoDigito){
-            throw new RuntimeException("CNPJ Invalido");
-        }
-
+        int resto = soma % 11;
+        return (resto < 2) ? 0 : 11 - resto;
     }
 }

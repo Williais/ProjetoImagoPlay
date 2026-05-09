@@ -1,6 +1,7 @@
 package com.imagoPlay.ProjetoImagoPlay.modules.producer.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ public class ProducerRequestDTO {
 
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 18, message = "Tamanho de documento inválido")
+    @Pattern(regexp = "\\d+", message = "O campo deve conter apenas números")
     private String cpfCnpj;
 
     @NotBlank(message = "A Bio é obrigatório")

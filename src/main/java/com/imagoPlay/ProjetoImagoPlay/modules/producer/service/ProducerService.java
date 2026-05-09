@@ -6,6 +6,7 @@ import com.imagoPlay.ProjetoImagoPlay.modules.producer.dto.ProducerResponseDTO;
 import com.imagoPlay.ProjetoImagoPlay.modules.producer.entity.Producer;
 import com.imagoPlay.ProjetoImagoPlay.modules.producer.repository.ProducerRepository;
 import com.imagoPlay.ProjetoImagoPlay.modules.users.entity.User;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -50,8 +51,6 @@ public class ProducerService {
         return response;
     }
 
-    public void validarCpfCnpj(Producer cpfCnpj){
 
-    }
 
 }
